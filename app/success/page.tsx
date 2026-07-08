@@ -3,7 +3,7 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { CheckCircle, Copy, Download, Loader2, FileText, Mail, ArrowLeft } from 'lucide-react';
+import { CheckCircle, Copy, Loader2, FileText, Mail, ArrowLeft } from 'lucide-react';
 
 interface OptimizationResult {
   optimized_resume: string;
@@ -23,8 +23,9 @@ function SuccessContent() {
 
   useEffect(() => {
     const sessionId = searchParams.get('session_id');
-    const resume = localStorage.getItem('jobmatch_pending_resume');
-    const jobDescription = localStorage.getItem('jobmatch_pending_job');
+    // Updated keys to match the home page rebranding
+    const resume = localStorage.getItem('quantresume_pending_resume');
+    const jobDescription = localStorage.getItem('quantresume_pending_job');
 
     if (!sessionId) {
       setError('Session verification pending. Please refresh.');
@@ -33,7 +34,7 @@ function SuccessContent() {
     }
 
     if (!resume || !jobDescription) {
-      setError('Data retrieval failed. Please return home.');
+      setError('Data retrieval failed. Please return home and try again.');
       setLoading(false);
       return;
     }
@@ -50,8 +51,9 @@ function SuccessContent() {
         if (!response.ok) throw new Error(data.error || 'Optimization failed.');
 
         setResult(data);
-        localStorage.removeItem('jobmatch_pending_resume');
-        localStorage.removeItem('jobmatch_pending_job');
+        // Cleanup
+        localStorage.removeItem('quantresume_pending_resume');
+        localStorage.removeItem('quantresume_pending_job');
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
       } finally {
@@ -113,7 +115,6 @@ function SuccessContent() {
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          {/* Sidebar Info */}
           <div className="lg:col-span-1 space-y-6">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">Keywords Injected</h3>
@@ -127,10 +128,8 @@ function SuccessContent() {
             </div>
           </div>
 
-          {/* Main Content */}
           <div className="lg:col-span-3">
             <div className="rounded-3xl border border-white/10 bg-white/5 overflow-hidden backdrop-blur-xl">
-              {/* Tabs */}
               <div className="flex border-b border-white/10 bg-white/5">
                 <button
                   onClick={() => setActiveTab('resume')}
