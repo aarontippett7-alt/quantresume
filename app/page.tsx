@@ -17,7 +17,9 @@ import {
   Cpu,
   Zap,
   Search,
-  HelpCircle
+  HelpCircle,
+  Database,
+  Activity
 } from 'lucide-react';
 
 export default function Home() {
@@ -145,6 +147,15 @@ export default function Home() {
               placeholder="Paste your resume text here..."
               className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all font-mono"
             />
+            
+            {/* Live Tease Badge */}
+            <div className="mt-4 flex items-center justify-between">
+              <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border transition-all ${resume.length > 50 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-slate-800 text-slate-500 border-white/5'}`}>
+                <Activity size={12} />
+                {resume.length > 50 ? 'Schema Ready' : 'Awaiting Data'}
+              </div>
+              <span className="text-[10px] text-slate-600 font-mono">{resume.length} chars</span>
+            </div>
           </div>
 
           <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-cyan-500/30 hover:bg-white/[0.07] backdrop-blur-xl shadow-2xl">
@@ -164,6 +175,15 @@ export default function Home() {
               placeholder="Paste the job requirements here..."
               className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-400/50 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 transition-all font-mono"
             />
+
+            {/* Live Tease Badge */}
+            <div className="mt-4 flex items-center justify-between">
+              <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border transition-all ${jobDescription.length > 50 ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20' : 'bg-slate-800 text-slate-500 border-white/5'}`}>
+                <Database size={12} />
+                {jobDescription.length > 50 ? 'Parameters Detected' : 'Awaiting Data'}
+              </div>
+              <span className="text-[10px] text-slate-600 font-mono">{jobDescription.length} chars</span>
+            </div>
           </div>
         </div>
 
@@ -178,85 +198,85 @@ export default function Home() {
               {loading ? (
                 <>
                   <Loader2 className="animate-spin" size={24} />
-                  Preparing Checkout...
+                  Initializing Quant Engine...
                 </>
               ) : (
                 <>
                   <ShieldCheck size={24} />
-                  Secure Checkout — $15
+                  Get the Quant Kit — $15
                 </>
               )}
             </button>
             <div className="flex items-center gap-6 text-sm text-slate-500 font-medium">
-              <span className="flex items-center gap-1.5"><Lock size={14} /> Encrypted</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} /> One-time payment</span>
+              <span className="flex items-center gap-1.5"><Lock size={14} /> Secure Stripe Payment</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} /> 100% Satisfaction Guarantee</span>
             </div>
           </div>
         </div>
 
         {/* Methodology Section */}
-        <div className="mt-32">
-          <div className="mb-12 text-center">
+        <div className="mt-32 pt-24 border-t border-white/5">
+          <div className="mb-16 text-center">
             <h2 className="text-3xl font-bold text-white">The Quant Methodology</h2>
-            <p className="mt-4 text-slate-400">How we engineer your career data for maximum impact.</p>
+            <p className="mt-4 text-slate-400">How we precision-engineer your career data.</p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             <div className="p-4">
-              <div className="mb-4 text-emerald-400"><Cpu size={24} /></div>
-              <h4 className="mb-2 font-bold text-white">Surgical Keyword Injection</h4>
-              <p className="text-sm text-slate-400 leading-relaxed">We don't just "add words." We identify the high-frequency semantic keys the ATS is programmed to find and weave them naturally into your experience.</p>
+              <div className="mb-4 text-emerald-400"><Zap size={24} /></div>
+              <h4 className="mb-2 font-bold text-white text-lg">Keyword Density Mapping</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">We don't just add keywords; we match the exact frequency and context that ATS algorithms expect for your target role.</p>
             </div>
             <div className="p-4">
-              <div className="mb-4 text-cyan-400"><Search size={24} /></div>
-              <h4 className="mb-2 font-bold text-white">ATS Schema Alignment</h4>
-              <p className="text-sm text-slate-400 leading-relaxed">Modern hiring software uses specific data parsers. We structure your resume data to ensure it is read correctly, preventing "parsing errors" that hide your talent.</p>
+              <div className="mb-4 text-cyan-400"><Cpu size={24} /></div>
+              <h4 className="mb-2 font-bold text-white text-lg">Schema Alignment</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">We restructure your experience into a data schema that parsers can read perfectly, ensuring no achievement is lost in translation.</p>
             </div>
             <div className="p-4">
-              <div className="mb-4 text-blue-400"><Zap size={24} /></div>
-              <h4 className="mb-2 font-bold text-white">Impact Quantification</h4>
-              <p className="text-sm text-slate-400 leading-relaxed">We transform passive task descriptions into ROI-focused achievements, using data-driven language that resonates with executive decision-makers.</p>
+              <div className="mb-4 text-blue-400"><BarChart3 size={24} /></div>
+              <h4 className="mb-2 font-bold text-white text-lg">Impact Quantifying</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">Our engine transforms passive task descriptions into high-impact, data-backed results that prove your ROI to hiring managers.</p>
             </div>
           </div>
         </div>
 
         {/* FAQ Section */}
         <div className="mt-32 rounded-3xl border border-white/5 bg-white/[0.02] p-12 backdrop-blur-sm">
-          <div className="mb-12 flex items-center gap-3">
-            <HelpCircle className="text-emerald-400" size={28} />
-            <h2 className="text-3xl font-bold text-white">Common Questions</h2>
+          <div className="mb-12 flex items-center gap-4">
+             <HelpCircle className="text-emerald-400" size={32} />
+             <h2 className="text-3xl font-bold text-white">Frequently Asked Questions</h2>
           </div>
-          <div className="grid grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
             <div>
-              <h4 className="mb-2 font-bold text-white">Is my data stored?</h4>
-              <p className="text-sm text-slate-400 leading-relaxed">No. We prioritize your privacy. Your resume and job description are processed in real-time and are not stored in our databases after your session ends.</p>
+              <h4 className="mb-2 font-bold text-white">Is my data secure?</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">Yes. We do not store your resume or job description data after your session is complete. Your privacy is our priority.</p>
             </div>
             <div>
-              <h4 className="mb-2 font-bold text-white">What if I'm not satisfied?</h4>
-              <p className="text-sm text-slate-400 leading-relaxed">We offer a 100% Quant Guarantee. If you don't see a significant improvement in your ATS match score, email us for a full refund.</p>
+              <h4 className="mb-2 font-bold text-white">What exactly do I get?</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">You get an optimized resume, a surgical cover letter, and a 5-question interview prep kit—all as downloadable PDFs and copyable text.</p>
+            </div>
+            <div>
+              <h4 className="mb-2 font-bold text-white">What is the "Quant Guarantee"?</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">If you don't feel your optimized kit is significantly better than your original, email us for a full refund. No questions asked.</p>
             </div>
             <div>
               <h4 className="mb-2 font-bold text-white">How long does it take?</h4>
-              <p className="text-sm text-slate-400 leading-relaxed">The entire optimization process takes less than 60 seconds after payment. You get instant access to your full career kit.</p>
-            </div>
-            <div>
-              <h4 className="mb-2 font-bold text-white">What format are the files in?</h4>
-              <p className="text-sm text-slate-400 leading-relaxed">You can download your optimized resume, cover letter, and interview prep kit as professional PDFs or copy the text directly.</p>
+              <p className="text-sm text-slate-500 leading-relaxed">The Quant Engine processes your data in about 15-30 seconds after payment is confirmed.</p>
             </div>
           </div>
         </div>
 
         {/* Footer */}
         <footer className="mt-32 border-t border-white/5 pt-16 text-center">
-          <div className="flex flex-col items-center gap-6">
-            <div className="flex items-center gap-2 text-slate-400">
+          <div className="mb-8 flex justify-center gap-6">
+            <a href="mailto:info@tippett-analytics.com" className="flex items-center gap-2 text-slate-400 hover:text-emerald-400 transition-colors text-sm">
               <Mail size={16} />
-              <a href="mailto:info@tippett-analytics.com" className="hover:text-emerald-400 transition-colors">info@tippett-analytics.com</a>
-            </div>
-            <p className="text-slate-500 text-sm">
-              © 2026 QuantResume. A product of <span className="text-slate-300 font-semibold">Tippett Analytics LLC</span>.
-            </p>
-            <p className="text-slate-600 text-xs">Built in Enola, PA</p>
+              info@tippett-analytics.com
+            </a>
           </div>
+          <p className="text-slate-500 text-sm">
+            © 2026 QuantResume. A product of <span className="text-slate-300 font-semibold">Tippett Analytics LLC</span>.
+          </p>
+          <p className="mt-2 text-slate-600 text-xs tracking-widest uppercase font-bold">Built in Enola, PA</p>
         </footer>
       </div>
     </div>
