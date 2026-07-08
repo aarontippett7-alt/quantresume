@@ -17,25 +17,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const prompt = `You are an ATS (Applicant Tracking System) expert. Your job is to optimize a resume to pass ATS systems while maintaining truthfulness.
+    const prompt = `You are the QuantResume AI, a surgical ATS (Applicant Tracking System) expert. Your job is to engineer a resume to pass complex hiring algorithms by analyzing data points in the job description and mapping them to the candidate's experience.
 
-RESUME:
+RESUME DATA:
 ${resume}
 
-JOB DESCRIPTION:
+TARGET JOB PARAMETERS:
 ${jobDescription}
 
 Please provide:
-1. An ATS-optimized version of the resume that incorporates keywords from the job description
-2. A list of keywords from the job description that were added/emphasized
-3. Specific formatting recommendations for ATS compatibility
+1. A data-optimized version of the resume that surgically incorporates high-value keywords.
+2. A list of specific keywords from the job description that were prioritized.
+3. Formatting recommendations for maximum machine readability.
 
-Format your response as JSON with the following structure:
+Format your response as JSON:
 {
   "optimized_resume": "the full optimized resume text",
   "keywords_added": ["keyword1", "keyword2", ...],
   "formatting_tips": ["tip1", "tip2", ...],
-  "match_score": 85
+  "match_score": 92
 }`;
 
     const response = await openai.chat.completions.create({
@@ -47,73 +47,20 @@ Format your response as JSON with the following structure:
         },
       ],
       temperature: 0.7,
-      max_tokens: 2000,
+      max_tokens: 2500,
     });
 
     const content = response.choices[0].message.content;
-    
-    // Parse JSON from response
     const jsonMatch = content?.match(/\{[\s\S]*\}/);
+    
     if (!jsonMatch) {
-      return NextResponse.json(
-        { error: 'Failed to parse AI response' },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: 'Analysis failed' }, { status: 500 });
     }
 
     const result = JSON.parse(jsonMatch[0]);
-
     return NextResponse.json(result);
   } catch (error) {
     console.error('Error:', error);
-    return NextResponse.json(
-      { error: 'Failed to optimize resume' },
-      { status: 500 }
-    );
-  }
-}
-
-export async function PUT(request: NextRequest) {
-  try {
-    const formData = await request.formData();
-    const file = formData.get('file') as File;
-
-    if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
-    }
-
-    const fileType = file.type;
-    let text = '';
-
-    if (fileType === 'text/plain') {
-      // Handle .txt files
-      text = await file.text();
-    } else if (fileType === 'application/pdf') {
-      // Handle PDF files
-      const buffer = await file.arrayBuffer();
-      try {
-        const pdfParse = require('pdf-parse');
-        const pdfData = await pdfParse(buffer);
-        text = pdfData.text;
-      } catch (pdfError) {
-        return NextResponse.json(
-          { error: 'Could not extract text from PDF. Please paste text instead.' },
-          { status: 400 }
-        );
-      }
-    } else {
-      return NextResponse.json(
-        { error: 'Please upload a .txt or .pdf file' },
-        { status: 400 }
-      );
-    }
-
-    return NextResponse.json({ text });
-  } catch (error) {
-    console.error('Error:', error);
-    return NextResponse.json(
-      { error: 'Failed to process file' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Optimization failed' }, { status: 500 });
   }
 }

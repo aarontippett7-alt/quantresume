@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FileText, Loader2, ShieldCheck, Sparkles, Target } from 'lucide-react';
+import { FileText, Loader2, ShieldCheck, Sparkles, Target, BarChart3 } from 'lucide-react';
 
 export default function Home() {
   const [resume, setResume] = useState('');
@@ -11,19 +11,18 @@ export default function Home() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const savedResume = localStorage.getItem('jobmatch_resume_draft');
-    const savedJobDescription = localStorage.getItem('jobmatch_job_draft');
-
+    const savedResume = localStorage.getItem('quantresume_resume_draft');
+    const savedJobDescription = localStorage.getItem('quantresume_job_draft');
     if (savedResume) setResume(savedResume);
     if (savedJobDescription) setJobDescription(savedJobDescription);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('jobmatch_resume_draft', resume);
+    localStorage.setItem('quantresume_resume_draft', resume);
   }, [resume]);
 
   useEffect(() => {
-    localStorage.setItem('jobmatch_job_draft', jobDescription);
+    localStorage.setItem('quantresume_job_draft', jobDescription);
   }, [jobDescription]);
 
   const handleCheckout = async () => {
@@ -36,8 +35,8 @@ export default function Home() {
     setError('');
 
     try {
-      localStorage.setItem('jobmatch_pending_resume', resume);
-      localStorage.setItem('jobmatch_pending_job', jobDescription);
+      localStorage.setItem('quantresume_pending_resume', resume);
+      localStorage.setItem('quantresume_pending_job', jobDescription);
 
       const response = await fetch('/api/create-checkout', {
         method: 'POST',
@@ -60,28 +59,28 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 overflow-hidden">
+    <div className="min-h-screen overflow-hidden bg-slate-950 text-slate-50">
+      {/* Background Decorative Elements */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute -top-32 -left-24 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="absolute top-1/3 -right-16 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
-        <div className="absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl" />
+        <div className="absolute -top-32 -left-24 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto mb-12 max-w-3xl text-center">
-          <div className="mb-5 inline-flex items-center gap-3 rounded-full border border-cyan-400/20 bg-white/5 px-4 py-2 text-sm text-cyan-300 backdrop-blur">
-            <Sparkles size={16} />
-            ATS optimization for real job applications
+      <div className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="mx-auto mb-16 max-w-3xl text-center">
+          <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-4 py-2 text-sm font-medium text-emerald-400 backdrop-blur">
+            <BarChart3 size={16} />
+            Surgical ATS optimization based on hiring data
           </div>
 
-          <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl">
-            <span className="bg-gradient-to-r from-cyan-300 via-sky-400 to-indigo-400 bg-clip-text text-transparent">
-              JobMatch AI
+          <h1 className="text-6xl font-extrabold tracking-tight sm:text-7xl">
+            <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              QuantResume
             </span>
           </h1>
 
-          <p className="mt-4 text-lg text-slate-300">
-            Turn your resume into a role-specific, ATS-friendly version that matches the job you want.
+          <p className="mt-6 text-xl text-slate-400 leading-relaxed">
+            Data-driven resume engineering. We analyze the job requirements and surgically inject the precise keywords and formatting needed to pass the algorithm.
           </p>
         </div>
 
@@ -91,71 +90,69 @@ export default function Home() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-cyan-950/20 backdrop-blur-xl">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="rounded-xl bg-cyan-500/15 p-2 text-cyan-300">
-                <FileText size={18} />
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+          {/* Resume Input */}
+          <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-emerald-500/30 hover:bg-white/[0.07] backdrop-blur-xl">
+            <div className="mb-6 flex items-center gap-4">
+              <div className="rounded-xl bg-emerald-500/15 p-3 text-emerald-400">
+                <FileText size={24} />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-white">Your Resume</h2>
-                <p className="text-sm text-slate-400">Paste your current resume text</p>
+                <h2 className="text-xl font-bold text-white">Source Resume</h2>
+                <p className="text-sm text-slate-400">Paste your current experience data</p>
               </div>
             </div>
 
             <textarea
               value={resume}
               onChange={(e) => setResume(e.target.value)}
-              placeholder="Paste your resume here..."
-              className="h-80 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-4 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400/50 focus:outline-none focus:ring-2 focus:ring-cyan-400/20"
+              placeholder="Paste your resume text here..."
+              className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
             />
-
-            <p className="mt-3 text-xs text-slate-400">{resume.length} characters</p>
           </div>
 
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-blue-950/20 backdrop-blur-xl">
-            <div className="mb-4 flex items-center gap-3">
-              <div className="rounded-xl bg-indigo-500/15 p-2 text-indigo-300">
-                <Target size={18} />
+          {/* Job Description Input */}
+          <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-cyan-500/30 hover:bg-white/[0.07] backdrop-blur-xl">
+            <div className="mb-6 flex items-center gap-4">
+              <div className="rounded-xl bg-cyan-500/15 p-3 text-cyan-400">
+                <Target size={24} />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-white">Job Description</h2>
-                <p className="text-sm text-slate-400">Paste the full posting for the role</p>
+                <h2 className="text-xl font-bold text-white">Target Parameters</h2>
+                <p className="text-sm text-slate-400">Paste the full job description</p>
               </div>
             </div>
 
             <textarea
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
-              placeholder="Paste the job description here..."
-              className="h-80 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-4 text-sm text-white placeholder:text-slate-500 focus:border-indigo-400/50 focus:outline-none focus:ring-2 focus:ring-indigo-400/20"
+              placeholder="Paste the job requirements here..."
+              className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all"
             />
-
-            <p className="mt-3 text-xs text-slate-400">{jobDescription.length} characters</p>
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-center gap-4">
+        <div className="mt-12 flex flex-col items-center justify-center gap-6">
           <button
             onClick={handleCheckout}
             disabled={loading}
-            className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-indigo-500 px-8 py-4 text-base font-semibold text-white shadow-lg shadow-cyan-950/40 transition hover:scale-[1.02] hover:from-cyan-400 hover:to-indigo-400 disabled:cursor-not-allowed disabled:opacity-60"
+            className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl bg-emerald-500 px-10 py-5 text-lg font-bold text-slate-950 transition-all hover:scale-[1.02] hover:bg-emerald-400 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? (
               <>
-                <Loader2 className="animate-spin" size={20} />
-                Redirecting to secure checkout...
+                <Loader2 className="animate-spin" size={24} />
+                Initializing Quant Engine...
               </>
             ) : (
               <>
-                <ShieldCheck size={20} />
-                Secure Checkout — $15
+                <ShieldCheck size={24} />
+                Optimize with QuantResume — $15
               </>
             )}
           </button>
-
-          <p className="text-sm text-slate-400">
-            Pay once, then get your optimized resume, ATS keywords, and formatting tips.
+          
+          <p className="text-sm text-slate-500">
+            Secure processing via Stripe. Results include optimized text, keyword analysis, and score.
           </p>
         </div>
       </div>

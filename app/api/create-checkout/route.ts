@@ -30,10 +30,10 @@ export async function POST(request: NextRequest) {
           price_data: {
             currency: 'usd',
             product_data: {
-              name: 'JobMatch AI Resume Optimization',
-              description: 'One ATS-focused resume optimization',
+              name: 'QuantResume Optimization',
+              description: 'Data-driven ATS resume engineering and keyword injection.',
             },
-            unit_amount: 1500,
+            unit_amount: 1500, // $15.00
           },
           quantity: 1,
         },
