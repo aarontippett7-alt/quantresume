@@ -4,6 +4,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { CheckCircle, Copy, Loader2, FileText, Mail, ArrowLeft, MessageSquare, Download } from 'lucide-react';
+import { jsPDF } from 'jspdf';
 
 interface InterviewQuestion {
   question: string;
@@ -79,6 +80,27 @@ function SuccessContent() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
+  };
+
+  const downloadAsPDF = () => {
+    if (!result) return;
+    
+    const doc = new jsPDF();
+    const title = activeTab === 'resume' ? 'Optimized Resume' : activeTab === 'letter' ? 'Cover Letter' : 'Interview Prep';
+    const content = activeTab === 'resume' ? result.optimized_resume : activeTab === 'letter' ? result.cover_letter : result.interview_prep.map(q => `Q: ${q.question}\nA: ${q.talking_points}`).join('\n\n');
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text(title, 20, 20);
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(10);
+    
+    // Split text to fit page width
+    const splitText = doc.splitTextToSize(content, 170);
+    doc.text(splitText, 20, 30);
+    
+    doc.save(`QuantResume_${activeTab}.pdf`);
   };
 
   if (loading) {
@@ -188,21 +210,31 @@ function SuccessContent() {
                   <div className="flex gap-2">
                     <button
                       onClick={copyToClipboard}
-                      className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400 active:scale-95"
+                      className="flex items-center gap-2 rounded-lg bg-white/5 px-4 py-2 text-xs font-bold text-slate-300 border border-white/10 hover:bg-white/10 transition-all"
                     >
-                      <Copy size={16} />
+                      <Copy size={14} />
                       {copied ? 'Copied!' : 'Copy Text'}
+                    </button>
+                    <button
+                      onClick={downloadAsPDF}
+                      className="flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20"
+                    >
+                      <Download size={14} />
+                      Download PDF
                     </button>
                   </div>
                 </div>
-                
-                <div className="rounded-2xl bg-slate-900/80 p-6 border border-white/5 min-h-[400px]">
+
+                <div className="rounded-2xl bg-slate-900/50 p-8 border border-white/5 min-h-[500px]">
                   {activeTab === 'interview' ? (
                     <div className="space-y-8">
                       {result?.interview_prep.map((item, i) => (
-                        <div key={i} className="space-y-2">
-                          <h4 className="text-emerald-400 font-bold text-sm">Question {i + 1}: {item.question}</h4>
-                          <p className="text-slate-300 text-sm leading-relaxed pl-4 border-l border-emerald-500/30">
+                        <div key={i} className="border-b border-white/5 pb-6 last:border-0">
+                          <h4 className="text-emerald-400 font-bold mb-2 flex gap-2">
+                            <span className="text-slate-500">Q{i+1}:</span>
+                            {item.question}
+                          </h4>
+                          <p className="text-sm text-slate-400 leading-relaxed pl-8 italic">
                             {item.talking_points}
                           </p>
                         </div>
@@ -215,6 +247,12 @@ function SuccessContent() {
                   )}
                 </div>
               </div>
+            </div>
+            
+            <div className="mt-8 text-center">
+              <a href="/" className="text-sm font-bold text-slate-500 hover:text-emerald-400 transition-colors">
+                ← Start New Optimization
+              </a>
             </div>
           </div>
         </div>
