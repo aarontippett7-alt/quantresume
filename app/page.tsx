@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FileText, Loader2, ShieldCheck, Sparkles, Target, BarChart3 } from 'lucide-react';
+import { FileText, Loader2, ShieldCheck, Sparkles, Target, BarChart3, Lock, CheckCircle2 } from 'lucide-react';
 
 export default function Home() {
   const [resume, setResume] = useState('');
@@ -59,7 +59,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen overflow-hidden bg-slate-950 text-slate-50">
+    <div className="min-h-screen overflow-hidden bg-slate-950 text-slate-50 font-sans">
       {/* Background Decorative Elements */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute -top-32 -left-24 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl" />
@@ -92,7 +92,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {/* Resume Input */}
-          <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-emerald-500/30 hover:bg-white/[0.07] backdrop-blur-xl">
+          <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-emerald-500/30 hover:bg-white/[0.07] backdrop-blur-xl shadow-2xl">
             <div className="mb-6 flex items-center gap-4">
               <div className="rounded-xl bg-emerald-500/15 p-3 text-emerald-400">
                 <FileText size={24} />
@@ -107,12 +107,12 @@ export default function Home() {
               value={resume}
               onChange={(e) => setResume(e.target.value)}
               placeholder="Paste your resume text here..."
-              className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
+              className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all font-mono"
             />
           </div>
 
           {/* Job Description Input */}
-          <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-cyan-500/30 hover:bg-white/[0.07] backdrop-blur-xl">
+          <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-cyan-500/30 hover:bg-white/[0.07] backdrop-blur-xl shadow-2xl">
             <div className="mb-6 flex items-center gap-4">
               <div className="rounded-xl bg-cyan-500/15 p-3 text-cyan-400">
                 <Target size={24} />
@@ -127,33 +127,58 @@ export default function Home() {
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Paste the job requirements here..."
-              className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all"
+              className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all font-mono"
             />
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-center gap-6">
-          <button
-            onClick={handleCheckout}
-            disabled={loading}
-            className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl bg-emerald-500 px-10 py-5 text-lg font-bold text-slate-950 transition-all hover:scale-[1.02] hover:bg-emerald-400 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="animate-spin" size={24} />
-                Initializing Quant Engine...
-              </>
-            ) : (
-              <>
-                <ShieldCheck size={24} />
-                Optimize with QuantResume — $15
-              </>
-            )}
-          </button>
+        <div className="mt-16 flex flex-col items-center justify-center gap-8">
+          <div className="flex flex-col items-center gap-4">
+             <button
+              onClick={handleCheckout}
+              disabled={loading}
+              className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl bg-emerald-500 px-10 py-5 text-lg font-bold text-slate-950 transition-all hover:scale-[1.02] hover:bg-emerald-400 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="animate-spin" size={24} />
+                  Initializing Quant Engine...
+                </>
+              ) : (
+                <>
+                  <ShieldCheck size={24} />
+                  Optimize Everything — $15
+                </>
+              )}
+            </button>
+            <div className="flex items-center gap-6 text-xs font-bold uppercase tracking-widest text-slate-500">
+              <span className="flex items-center gap-1.5"><Lock size={12} /> Secure Stripe Payment</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={12} /> Quant Guarantee</span>
+            </div>
+          </div>
           
-          <p className="text-sm text-slate-500">
-            Secure processing via Stripe. Results include optimized text, keyword analysis, and score.
-          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl mt-8 border-t border-white/5 pt-12">
+            <div className="text-center">
+              <h3 className="text-emerald-400 font-bold mb-2">1. Optimized Resume</h3>
+              <p className="text-sm text-slate-500">Surgical keyword injection to pass the ATS algorithm.</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-emerald-400 font-bold mb-2">2. Cover Letter</h3>
+              <p className="text-sm text-slate-500">Achievement-mapped letter targeting job pain points.</p>
+            </div>
+            <div className="text-center">
+              <h3 className="text-emerald-400 font-bold mb-2">3. Interview Prep</h3>
+              <p className="text-sm text-slate-500">Top 5 questions & talking points for this specific role.</p>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center max-w-2xl border-t border-white/5 pt-12">
+            <p className="text-sm text-slate-500 italic">
+              "Built by a Director of Analytics to solve the data mismatch in modern hiring. 
+              If you don't see a match score improvement, email us for a full refund."
+            </p>
+            <p className="mt-4 text-xs font-bold text-slate-600 uppercase tracking-widest">— QuantResume Founder</p>
+          </div>
         </div>
       </div>
     </div>

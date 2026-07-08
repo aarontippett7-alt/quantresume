@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
 TASK:
 1. Engineer a data-optimized version of the resume that incorporates high-value keywords for the target job.
 2. Write a high-conversion, professional cover letter that maps the candidate's specific achievements to the job's pain points.
+3. Generate an "Interview Prep Kit" containing the 5 most likely interview questions for this specific role and candidate, along with suggested "Quant" talking points for each.
 
 RESUME DATA:
 ${resume}
@@ -33,6 +34,10 @@ Format your response as a valid JSON object:
 {
   "optimized_resume": "the full optimized resume text",
   "cover_letter": "a professional, surgical cover letter",
+  "interview_prep": [
+    { "question": "...", "talking_points": "..." },
+    ...
+  ],
   "keywords_added": ["keyword1", "keyword2", ...],
   "formatting_tips": ["tip1", "tip2", ...],
   "match_score": 92
