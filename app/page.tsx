@@ -127,7 +127,7 @@ export default function Home() {
               value={jobDescription}
               onChange={(e) => setJobDescription(e.target.value)}
               placeholder="Paste the job requirements here..."
-              className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-500/50 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition-all font-mono"
+              className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-cyan-400/50 focus:outline-none focus:ring-2 focus:ring-cyan-400/20 transition-all font-mono"
             />
           </div>
         </div>
@@ -172,13 +172,15 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-12 text-center max-w-2xl border-t border-white/5 pt-12">
-            <p className="text-sm text-slate-500 italic">
-              "Built by a Director of Analytics to solve the data mismatch in modern hiring. 
-              If you don't see a match score improvement, email us for a full refund."
+          {/* Professional Footer */}
+          <footer className="mt-24 w-full border-t border-white/5 pt-8 pb-12 text-center">
+            <p className="text-sm text-slate-500">
+              © 2026 QuantResume. A product of <span className="text-slate-400 font-semibold">Tippett Analytics LLC</span>.
             </p>
-            <p className="mt-4 text-xs font-bold text-slate-600 uppercase tracking-widest">— QuantResume Founder</p>
-          </div>
+            <p className="mt-2 text-[10px] text-slate-600 uppercase tracking-[0.2em]">
+              Data-Driven Career Engineering • Built in Enola, PA
+            </p>
+          </footer>
         </div>
       </div>
     </div>
