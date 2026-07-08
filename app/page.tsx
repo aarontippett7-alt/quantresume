@@ -1,16 +1,14 @@
 // app/page.tsx
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import { FileText, Loader2, ShieldCheck, Sparkles, Target, BarChart3, Lock, CheckCircle2, Upload } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { FileText, Loader2, ShieldCheck, Sparkles, Target, BarChart3, Lock, CheckCircle2 } from 'lucide-react';
 
 export default function Home() {
   const [resume, setResume] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [loading, setLoading] = useState(false);
-  const [parsing, setParsing] = useState(false);
   const [error, setError] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const savedResume = localStorage.getItem('quantresume_resume_draft');
@@ -26,33 +24,6 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('quantresume_job_draft', jobDescription);
   }, [jobDescription]);
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setParsing(true);
-    setError('');
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      const response = await fetch('/api/parse-pdf', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Failed to parse PDF');
-      
-      setResume(data.text);
-    } catch (err) {
-      setError('Could not read PDF. Please paste text manually.');
-    } finally {
-      setParsing(false);
-    }
-  };
 
   const handleCheckout = async () => {
     if (!resume.trim() || !jobDescription.trim()) {
@@ -89,6 +60,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-hidden bg-slate-950 text-slate-50 font-sans">
+      {/* Background Orbs */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute -top-32 -left-24 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
@@ -121,37 +93,20 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {/* Resume Input */}
           <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-emerald-500/30 hover:bg-white/[0.07] backdrop-blur-xl shadow-2xl">
-            <div className="mb-6 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="rounded-xl bg-emerald-500/15 p-3 text-emerald-400">
-                  <FileText size={24} />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-white">Source Resume</h2>
-                  <p className="text-sm text-slate-400">Upload PDF or paste text</p>
-                </div>
+            <div className="mb-6 flex items-center gap-4">
+              <div className="rounded-xl bg-emerald-500/15 p-3 text-emerald-400">
+                <FileText size={24} />
               </div>
-              <button 
-                onClick={() => fileInputRef.current?.click()}
-                disabled={parsing}
-                className="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-xs font-bold text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/10 transition-all"
-              >
-                {parsing ? <Loader2 className="animate-spin" size={14} /> : <Upload size={14} />}
-                {parsing ? 'Reading...' : 'Upload PDF'}
-              </button>
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleFileUpload} 
-                accept=".pdf" 
-                className="hidden" 
-              />
+              <div>
+                <h2 className="text-xl font-bold text-white">Source Resume</h2>
+                <p className="text-sm text-slate-400">Paste your current experience data</p>
+              </div>
             </div>
 
             <textarea
               value={resume}
               onChange={(e) => setResume(e.target.value)}
-              placeholder="Paste your resume text here or upload a PDF..."
+              placeholder="Paste your resume text here..."
               className="h-96 w-full rounded-2xl border border-white/10 bg-slate-900/60 p-5 text-sm text-slate-200 placeholder:text-slate-600 focus:border-emerald-500/50 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all font-mono"
             />
           </div>
@@ -181,49 +136,35 @@ export default function Home() {
           <div className="flex flex-col items-center gap-4">
              <button
               onClick={handleCheckout}
-              disabled={loading || parsing}
+              disabled={loading}
               className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl bg-emerald-500 px-10 py-5 text-lg font-bold text-slate-950 transition-all hover:scale-[1.02] hover:bg-emerald-400 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
             >
               {loading ? (
                 <>
                   <Loader2 className="animate-spin" size={24} />
-                  Initializing Quant Engine...
+                  Preparing Checkout...
                 </>
               ) : (
                 <>
                   <ShieldCheck size={24} />
-                  Optimize Everything — $15
+                  Secure Checkout — $15
                 </>
               )}
             </button>
-            <div className="flex items-center gap-6 text-xs font-bold uppercase tracking-widest text-slate-500">
-              <span className="flex items-center gap-1.5"><Lock size={12} /> Secure Stripe Payment</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={12} /> Quant Guarantee</span>
+            <div className="flex items-center gap-6 text-sm text-slate-500 font-medium">
+              <span className="flex items-center gap-1.5"><Lock size={14} /> Encrypted</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} /> One-time payment</span>
             </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl mt-8 border-t border-white/5 pt-12">
-            <div className="text-center">
-              <h3 className="text-emerald-400 font-bold mb-2">1. Optimized Resume</h3>
-              <p className="text-sm text-slate-500">Surgical keyword injection to pass the ATS algorithm.</p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-emerald-400 font-bold mb-2">2. Cover Letter</h3>
-              <p className="text-sm text-slate-500">Achievement-mapped letter targeting job pain points.</p>
-            </div>
-            <div className="text-center">
-              <h3 className="text-emerald-400 font-bold mb-2">3. Interview Prep</h3>
-              <p className="text-sm text-slate-500">Top 5 questions & talking points for this specific role.</p>
-            </div>
-          </div>
-
-          <div className="mt-12 text-center border-t border-white/5 pt-8 w-full">
-            <p className="text-slate-500 text-sm">
-              © 2026 QuantResume. A product of <span className="text-slate-300 font-bold">Tippett Analytics LLC</span>.
-            </p>
-            <p className="text-slate-600 text-xs mt-1">Built in Enola, PA</p>
           </div>
         </div>
+
+        {/* Footer */}
+        <footer className="mt-24 border-t border-white/5 pt-12 text-center">
+          <p className="text-slate-500 text-sm">
+            © 2026 QuantResume. A product of <span className="text-slate-300 font-semibold">Tippett Analytics LLC</span>.
+          </p>
+          <p className="mt-2 text-slate-600 text-xs">Built in Enola, PA</p>
+        </footer>
       </div>
     </div>
   );
