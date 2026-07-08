@@ -1,8 +1,9 @@
 // app/api/parse-pdf/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
-// We use require because pdf-parse does not have a default ESM export
-// which causes issues with Next.js Turbopack builds.
+// This line tells Next.js NOT to try and pre-render this during build
+export const dynamic = 'force-dynamic'; 
+
 const pdf = require('pdf-parse');
 
 export async function POST(request: NextRequest) {
@@ -17,7 +18,6 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     
-    // pdf-parse returns a promise that resolves to the data object
     const data = await pdf(buffer);
 
     return NextResponse.json({ text: data.text });
