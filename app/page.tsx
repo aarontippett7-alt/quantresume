@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FileText, Loader2, ShieldCheck, Sparkles, Target, BarChart3, Lock, CheckCircle2 } from 'lucide-react';
+import { FileText, Loader2, ShieldCheck, Sparkles, Target, BarChart3, Lock, CheckCircle2, Mail, FileCheck, MessageSquare } from 'lucide-react';
 
 export default function Home() {
   const [resume, setResume] = useState('');
@@ -84,6 +84,25 @@ export default function Home() {
           </p>
         </div>
 
+        {/* Value Prop Section */}
+        <div className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-sm">
+            <div className="mb-4 text-emerald-400"><FileCheck size={32} /></div>
+            <h3 className="mb-2 text-lg font-bold text-white">Optimized Resume</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">A surgical rewrite of your experience, specifically mapped to the job's target keywords and ATS schema.</p>
+          </div>
+          <div className="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-sm">
+            <div className="mb-4 text-cyan-400"><Mail size={32} /></div>
+            <h3 className="mb-2 text-lg font-bold text-white">Surgical Cover Letter</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">A high-conversion letter that connects your achievements directly to the company's pain points.</p>
+          </div>
+          <div className="rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur-sm">
+            <div className="mb-4 text-blue-400"><MessageSquare size={32} /></div>
+            <h3 className="mb-2 text-lg font-bold text-white">Interview Prep Kit</h3>
+            <p className="text-sm text-slate-400 leading-relaxed">The 5 most likely questions for this role and the "Quant" talking points you need to answer them.</p>
+          </div>
+        </div>
+
         {error && (
           <div className="mx-auto mb-8 max-w-4xl rounded-2xl border border-rose-500/30 bg-rose-500/10 px-5 py-4 text-rose-200 backdrop-blur-sm">
             {error}
@@ -99,7 +118,7 @@ export default function Home() {
               </div>
               <div>
                 <h2 className="text-xl font-bold text-white">Source Resume</h2>
-                <p className="text-sm text-slate-400">Paste your current experience data</p>
+                <p className="text-sm text-slate-400">Paste your current resume text</p>
               </div>
             </div>
 
@@ -163,7 +182,13 @@ export default function Home() {
           <p className="text-slate-500 text-sm">
             © 2026 QuantResume. A product of <span className="text-slate-300 font-semibold">Tippett Analytics LLC</span>.
           </p>
-          <p className="mt-2 text-slate-600 text-xs">Built in Enola, PA</p>
+          <div className="mt-4 flex flex-col items-center gap-2">
+            <a href="mailto:info@tippett-analytics.com" className="flex items-center gap-2 text-slate-400 hover:text-emerald-400 transition-colors text-sm">
+              <Mail size={14} />
+              info@tippett-analytics.com
+            </a>
+            <p className="text-slate-600 text-xs">Built in Enola, PA</p>
+          </div>
         </footer>
       </div>
     </div>
