@@ -1,13 +1,14 @@
 // app/api/parse-pdf/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
-// This line tells Next.js NOT to try and pre-render this during build
 export const dynamic = 'force-dynamic'; 
-
-const pdf = require('pdf-parse');
 
 export async function POST(request: NextRequest) {
   try {
+    // MOVE THE REQUIRE INSIDE THE FUNCTION
+    // This prevents the build process from crashing
+    const pdf = require('pdf-parse');
+
     const formData = await request.formData();
     const file = formData.get('file') as File;
 
@@ -18,6 +19,7 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     
+    // pdf-parse returns a promise that resolves to the data object
     const data = await pdf(buffer);
 
     return NextResponse.json({ text: data.text });
