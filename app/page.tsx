@@ -2,7 +2,23 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FileText, Loader2, ShieldCheck, Sparkles, Target, BarChart3, Lock, CheckCircle2, Mail, FileCheck, MessageSquare } from 'lucide-react';
+import { 
+  FileText, 
+  Loader2, 
+  ShieldCheck, 
+  Sparkles, 
+  Target, 
+  BarChart3, 
+  Lock, 
+  CheckCircle2, 
+  Mail, 
+  FileCheck, 
+  MessageSquare,
+  Cpu,
+  Zap,
+  Search,
+  HelpCircle
+} from 'lucide-react';
 
 export default function Home() {
   const [resume, setResume] = useState('');
@@ -67,6 +83,7 @@ export default function Home() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+        {/* Hero Section */}
         <div className="mx-auto mb-16 max-w-3xl text-center">
           <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-4 py-2 text-sm font-medium text-emerald-400 backdrop-blur">
             <BarChart3 size={16} />
@@ -109,8 +126,8 @@ export default function Home() {
           </div>
         )}
 
+        {/* Input Areas */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          {/* Resume Input */}
           <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-emerald-500/30 hover:bg-white/[0.07] backdrop-blur-xl shadow-2xl">
             <div className="mb-6 flex items-center gap-4">
               <div className="rounded-xl bg-emerald-500/15 p-3 text-emerald-400">
@@ -118,7 +135,7 @@ export default function Home() {
               </div>
               <div>
                 <h2 className="text-xl font-bold text-white">Source Resume</h2>
-                <p className="text-sm text-slate-400">Paste your current resume text</p>
+                <p className="text-sm text-slate-400">Paste your current experience data</p>
               </div>
             </div>
 
@@ -130,7 +147,6 @@ export default function Home() {
             />
           </div>
 
-          {/* Job Description Input */}
           <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-cyan-500/30 hover:bg-white/[0.07] backdrop-blur-xl shadow-2xl">
             <div className="mb-6 flex items-center gap-4">
               <div className="rounded-xl bg-cyan-500/15 p-3 text-cyan-400">
@@ -151,6 +167,7 @@ export default function Home() {
           </div>
         </div>
 
+        {/* CTA Section */}
         <div className="mt-16 flex flex-col items-center justify-center gap-8">
           <div className="flex flex-col items-center gap-4">
              <button
@@ -177,16 +194,67 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Methodology Section */}
+        <div className="mt-32">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold text-white">The Quant Methodology</h2>
+            <p className="mt-4 text-slate-400">How we engineer your career data for maximum impact.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="p-4">
+              <div className="mb-4 text-emerald-400"><Cpu size={24} /></div>
+              <h4 className="mb-2 font-bold text-white">Surgical Keyword Injection</h4>
+              <p className="text-sm text-slate-400 leading-relaxed">We don't just "add words." We identify the high-frequency semantic keys the ATS is programmed to find and weave them naturally into your experience.</p>
+            </div>
+            <div className="p-4">
+              <div className="mb-4 text-cyan-400"><Search size={24} /></div>
+              <h4 className="mb-2 font-bold text-white">ATS Schema Alignment</h4>
+              <p className="text-sm text-slate-400 leading-relaxed">Modern hiring software uses specific data parsers. We structure your resume data to ensure it is read correctly, preventing "parsing errors" that hide your talent.</p>
+            </div>
+            <div className="p-4">
+              <div className="mb-4 text-blue-400"><Zap size={24} /></div>
+              <h4 className="mb-2 font-bold text-white">Impact Quantification</h4>
+              <p className="text-sm text-slate-400 leading-relaxed">We transform passive task descriptions into ROI-focused achievements, using data-driven language that resonates with executive decision-makers.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="mt-32 rounded-3xl border border-white/5 bg-white/[0.02] p-12 backdrop-blur-sm">
+          <div className="mb-12 flex items-center gap-3">
+            <HelpCircle className="text-emerald-400" size={28} />
+            <h2 className="text-3xl font-bold text-white">Common Questions</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-2">
+            <div>
+              <h4 className="mb-2 font-bold text-white">Is my data stored?</h4>
+              <p className="text-sm text-slate-400 leading-relaxed">No. We prioritize your privacy. Your resume and job description are processed in real-time and are not stored in our databases after your session ends.</p>
+            </div>
+            <div>
+              <h4 className="mb-2 font-bold text-white">What if I'm not satisfied?</h4>
+              <p className="text-sm text-slate-400 leading-relaxed">We offer a 100% Quant Guarantee. If you don't see a significant improvement in your ATS match score, email us for a full refund.</p>
+            </div>
+            <div>
+              <h4 className="mb-2 font-bold text-white">How long does it take?</h4>
+              <p className="text-sm text-slate-400 leading-relaxed">The entire optimization process takes less than 60 seconds after payment. You get instant access to your full career kit.</p>
+            </div>
+            <div>
+              <h4 className="mb-2 font-bold text-white">What format are the files in?</h4>
+              <p className="text-sm text-slate-400 leading-relaxed">You can download your optimized resume, cover letter, and interview prep kit as professional PDFs or copy the text directly.</p>
+            </div>
+          </div>
+        </div>
+
         {/* Footer */}
-        <footer className="mt-24 border-t border-white/5 pt-12 text-center">
-          <p className="text-slate-500 text-sm">
-            © 2026 QuantResume. A product of <span className="text-slate-300 font-semibold">Tippett Analytics LLC</span>.
-          </p>
-          <div className="mt-4 flex flex-col items-center gap-2">
-            <a href="mailto:info@tippett-analytics.com" className="flex items-center gap-2 text-slate-400 hover:text-emerald-400 transition-colors text-sm">
-              <Mail size={14} />
-              info@tippett-analytics.com
-            </a>
+        <footer className="mt-32 border-t border-white/5 pt-16 text-center">
+          <div className="flex flex-col items-center gap-6">
+            <div className="flex items-center gap-2 text-slate-400">
+              <Mail size={16} />
+              <a href="mailto:info@tippett-analytics.com" className="hover:text-emerald-400 transition-colors">info@tippett-analytics.com</a>
+            </div>
+            <p className="text-slate-500 text-sm">
+              © 2026 QuantResume. A product of <span className="text-slate-300 font-semibold">Tippett Analytics LLC</span>.
+            </p>
             <p className="text-slate-600 text-xs">Built in Enola, PA</p>
           </div>
         </footer>
