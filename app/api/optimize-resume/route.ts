@@ -17,7 +17,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const prompt = `You are the QuantResume AI, a surgical ATS (Applicant Tracking System) expert. Your job is to engineer a resume to pass complex hiring algorithms by analyzing data points in the job description and mapping them to the candidate's experience.
+    const prompt = `You are the QuantResume AI, a surgical ATS expert and executive career consultant. 
+
+TASK:
+1. Engineer a data-optimized version of the resume that incorporates high-value keywords for the target job.
+2. Write a high-conversion, professional cover letter that maps the candidate's specific achievements to the job's pain points.
 
 RESUME DATA:
 ${resume}
@@ -25,14 +29,10 @@ ${resume}
 TARGET JOB PARAMETERS:
 ${jobDescription}
 
-Please provide:
-1. A data-optimized version of the resume that surgically incorporates high-value keywords.
-2. A list of specific keywords from the job description that were prioritized.
-3. Formatting recommendations for maximum machine readability.
-
-Format your response as JSON:
+Format your response as a valid JSON object:
 {
   "optimized_resume": "the full optimized resume text",
+  "cover_letter": "a professional, surgical cover letter",
   "keywords_added": ["keyword1", "keyword2", ...],
   "formatting_tips": ["tip1", "tip2", ...],
   "match_score": 92
@@ -40,24 +40,12 @@ Format your response as JSON:
 
     const response = await openai.chat.completions.create({
       model: 'gpt-4o',
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
+      messages: [{ role: 'user', content: prompt }],
       temperature: 0.7,
-      max_tokens: 2500,
+      response_format: { type: "json_object" }
     });
 
-    const content = response.choices[0].message.content;
-    const jsonMatch = content?.match(/\{[\s\S]*\}/);
-    
-    if (!jsonMatch) {
-      return NextResponse.json({ error: 'Analysis failed' }, { status: 500 });
-    }
-
-    const result = JSON.parse(jsonMatch[0]);
+    const result = JSON.parse(response.choices[0].message.content || '{}');
     return NextResponse.json(result);
   } catch (error) {
     console.error('Error:', error);

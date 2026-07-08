@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
           price_data: {
             currency: 'usd',
             product_data: {
-              name: 'QuantResume Optimization',
-              description: 'Data-driven ATS resume engineering and keyword injection.',
+              name: 'QuantResume: Resume + Cover Letter',
+              description: 'Surgical ATS optimization and achievement-mapped cover letter.',
             },
             unit_amount: 1500, // $15.00
           },
