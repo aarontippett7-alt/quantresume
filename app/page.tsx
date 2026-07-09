@@ -1,7 +1,7 @@
 // app/page.tsx
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { 
   FileText, 
   Loader2, 
@@ -14,18 +14,19 @@ import {
   Mail, 
   FileCheck, 
   MessageSquare,
-  Activity,
-  Upload,
-  AlertCircle
+  Cpu,
+  Zap,
+  Search,
+  HelpCircle,
+  Database,
+  Activity
 } from 'lucide-react';
 
 export default function Home() {
   const [resume, setResume] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [loading, setLoading] = useState(false);
-  const [parsing, setParsing] = useState(false);
   const [error, setError] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const savedResume = localStorage.getItem('quantresume_resume_draft');
@@ -41,39 +42,6 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('quantresume_job_draft', jobDescription);
   }, [jobDescription]);
-
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (file.type !== 'application/pdf') {
-      setError('Please upload a PDF file.');
-      return;
-    }
-
-    setParsing(true);
-    setError('');
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      const response = await fetch('/api/parse-pdf', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Failed to parse PDF');
-
-      setResume(data.text);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not read PDF. Please paste text manually.');
-    } finally {
-      setParsing(false);
-      if (fileInputRef.current) fileInputRef.current.value = '';
-    }
-  };
 
   const handleCheckout = async () => {
     if (!resume.trim() || !jobDescription.trim()) {
@@ -155,8 +123,7 @@ export default function Home() {
         </div>
 
         {error && (
-          <div className="mx-auto mb-8 max-w-4xl rounded-2xl border border-rose-500/30 bg-rose-500/10 px-5 py-4 text-rose-200 backdrop-blur-sm flex items-center gap-3">
-            <AlertCircle size={20} />
+          <div className="mx-auto mb-8 max-w-4xl rounded-2xl border border-rose-500/30 bg-rose-500/10 px-5 py-4 text-rose-200 backdrop-blur-sm">
             {error}
           </div>
         )}
@@ -164,32 +131,14 @@ export default function Home() {
         {/* Input Areas */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <div className="group rounded-3xl border border-white/10 bg-white/5 p-8 transition-all hover:border-emerald-500/30 hover:bg-white/[0.07] backdrop-blur-xl shadow-2xl">
-            <div className="mb-6 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="rounded-xl bg-emerald-500/15 p-3 text-emerald-400">
-                  <FileText size={24} />
-                </div>
-                <div>
-                  <h2 className="text-xl font-bold text-white">Source Resume</h2>
-                  <p className="text-sm text-slate-400">Paste or upload your PDF</p>
-                </div>
+            <div className="mb-6 flex items-center gap-4">
+              <div className="rounded-xl bg-emerald-500/15 p-3 text-emerald-400">
+                <FileText size={24} />
               </div>
-              
-              <button 
-                onClick={() => fileInputRef.current?.click()}
-                disabled={parsing}
-                className="flex items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-xs font-bold text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all"
-              >
-                {parsing ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-                {parsing ? 'Reading...' : 'Upload PDF'}
-              </button>
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleFileUpload} 
-                accept=".pdf" 
-                className="hidden" 
-              />
+              <div>
+                <h2 className="text-xl font-bold text-white">Source Resume</h2>
+                <p className="text-sm text-slate-400">Paste your current experience data</p>
+              </div>
             </div>
 
             <textarea
@@ -230,84 +179,104 @@ export default function Home() {
             {/* Live Tease Badge */}
             <div className="mt-4 flex items-center justify-between">
               <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border transition-all ${jobDescription.length > 50 ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20' : 'bg-slate-800 text-slate-500 border-white/5'}`}>
-                <Activity size={12} />
-                {jobDescription.length > 50 ? 'Target Locked' : 'Awaiting Parameters'}
+                <Database size={12} />
+                {jobDescription.length > 50 ? 'Parameters Detected' : 'Awaiting Data'}
               </div>
               <span className="text-[10px] text-slate-600 font-mono">{jobDescription.length} chars</span>
             </div>
           </div>
         </div>
 
+        {/* CTA Section */}
         <div className="mt-16 flex flex-col items-center justify-center gap-8">
           <div className="flex flex-col items-center gap-4">
              <button
               onClick={handleCheckout}
-              disabled={loading || parsing}
+              disabled={loading}
               className="group relative inline-flex items-center gap-3 overflow-hidden rounded-2xl bg-emerald-500 px-10 py-5 text-lg font-bold text-slate-950 transition-all hover:scale-[1.02] hover:bg-emerald-400 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 shadow-[0_0_20px_rgba(16,185,129,0.3)]"
             >
               {loading ? (
                 <>
                   <Loader2 className="animate-spin" size={24} />
-                  Preparing Checkout...
+                  Initializing Quant Engine...
                 </>
               ) : (
                 <>
                   <ShieldCheck size={24} />
-                  Secure Checkout — $15
+                  Get the Quant Kit — $15
                 </>
               )}
             </button>
             <div className="flex items-center gap-6 text-sm text-slate-500 font-medium">
-              <span className="flex items-center gap-1.5"><Lock size={14} /> Encrypted</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} /> One-time payment</span>
+              <span className="flex items-center gap-1.5"><Lock size={14} /> Secure Stripe Payment</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} /> 100% Satisfaction Guarantee</span>
             </div>
           </div>
         </div>
 
         {/* Methodology Section */}
-        <div className="mt-32">
-          <h2 className="mb-12 text-center text-3xl font-bold text-white">The Quant Methodology</h2>
+        <div className="mt-32 pt-24 border-t border-white/5">
+          <div className="mb-16 text-center">
+            <h2 className="text-3xl font-bold text-white">The Quant Methodology</h2>
+            <p className="mt-4 text-slate-400">How we precision-engineer your career data.</p>
+          </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-8">
-              <h3 className="mb-3 font-bold text-emerald-400">Keyword Density Mapping</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">We don't just add words. We analyze the job description's semantic weight and match the frequency the ATS algorithms expect.</p>
+            <div className="p-4">
+              <div className="mb-4 text-emerald-400"><Zap size={24} /></div>
+              <h4 className="mb-2 font-bold text-white text-lg">Keyword Density Mapping</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">We don't just add keywords; we match the exact frequency and context that ATS algorithms expect for your target role.</p>
             </div>
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-8">
-              <h3 className="mb-3 font-bold text-cyan-400">Schema Alignment</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">We structure your experience data so the parser reads it correctly, ensuring your achievements aren't lost in translation.</p>
+            <div className="p-4">
+              <div className="mb-4 text-cyan-400"><Cpu size={24} /></div>
+              <h4 className="mb-2 font-bold text-white text-lg">Schema Alignment</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">We restructure your experience into a data schema that parsers can read perfectly, ensuring no achievement is lost in translation.</p>
             </div>
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-8">
-              <h3 className="mb-3 font-bold text-blue-400">Impact Quantifying</h3>
-              <p className="text-sm text-slate-400 leading-relaxed">We transform "tasks performed" into "ROI delivered," using the specific metrics and KPIs relevant to the target role.</p>
+            <div className="p-4">
+              <div className="mb-4 text-blue-400"><BarChart3 size={24} /></div>
+              <h4 className="mb-2 font-bold text-white text-lg">Impact Quantifying</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">Our engine transforms passive task descriptions into high-impact, data-backed results that prove your ROI to hiring managers.</p>
             </div>
           </div>
         </div>
 
         {/* FAQ Section */}
-        <div className="mt-32 mx-auto max-w-3xl">
-          <h2 className="mb-12 text-center text-3xl font-bold text-white">Director's FAQ</h2>
-          <div className="space-y-6">
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-6">
-              <h4 className="mb-2 font-bold text-white">Is my data safe?</h4>
-              <p className="text-sm text-slate-400">Yes. We use enterprise-grade encryption. We do not store your resume data after the session is complete.</p>
+        <div className="mt-32 rounded-3xl border border-white/5 bg-white/[0.02] p-12 backdrop-blur-sm">
+          <div className="mb-12 flex items-center gap-4">
+             <HelpCircle className="text-emerald-400" size={32} />
+             <h2 className="text-3xl font-bold text-white">Frequently Asked Questions</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+            <div>
+              <h4 className="mb-2 font-bold text-white">Is my data secure?</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">Yes. We do not store your resume or job description data after your session is complete. Your privacy is our priority.</p>
             </div>
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-6">
-              <h4 className="mb-2 font-bold text-white">Why $15?</h4>
-              <p className="text-sm text-slate-400">Most resume services charge $300+. We use surgical AI to deliver the same results instantly for the price of a lunch.</p>
+            <div>
+              <h4 className="mb-2 font-bold text-white">What exactly do I get?</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">You get an optimized resume, a surgical cover letter, and a 5-question interview prep kit—all as downloadable PDFs and copyable text.</p>
             </div>
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-6">
-              <h4 className="mb-2 font-bold text-white">What if I'm not happy?</h4>
-              <p className="text-sm text-slate-400">If you don't see a significant increase in your ATS match score, email us at info@tippett-analytics.com for a full refund.</p>
+            <div>
+              <h4 className="mb-2 font-bold text-white">What is the "Quant Guarantee"?</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">If you don't feel your optimized kit is significantly better than your original, email us for a full refund. No questions asked.</p>
+            </div>
+            <div>
+              <h4 className="mb-2 font-bold text-white">How long does it take?</h4>
+              <p className="text-sm text-slate-500 leading-relaxed">The Quant Engine processes your data in about 15-30 seconds after payment is confirmed.</p>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <footer className="mt-32 border-t border-white/5 pt-12 text-center pb-12">
+        <footer className="mt-32 border-t border-white/5 pt-16 text-center">
+          <div className="mb-8 flex justify-center gap-6">
+            <a href="mailto:info@tippett-analytics.com" className="flex items-center gap-2 text-slate-400 hover:text-emerald-400 transition-colors text-sm">
+              <Mail size={16} />
+              info@tippett-analytics.com
+            </a>
+          </div>
           <p className="text-slate-500 text-sm">
             © 2026 QuantResume. A product of <span className="text-slate-300 font-semibold">Tippett Analytics LLC</span>.
           </p>
-          <p className="mt-2 text-slate-600 text-xs">Built in Enola, PA | info@tippett-analytics.com</p>
+          <p className="mt-2 text-slate-600 text-xs tracking-widest uppercase font-bold">Built in Enola, PA</p>
         </footer>
       </div>
     </div>
